@@ -6,11 +6,14 @@
 """
 
 import os.path
+from dotenv import load_dotenv, find_dotenv
 from pydantic import BaseSettings
 from typing import List
 
 
 class Config(BaseSettings):
+    # 加载环境变量.env；覆盖模式，添加到系统环境变量中
+    load_dotenv(find_dotenv(), override=True)
     # 调试模式
     APP_DEBUG: bool = True
     # 项目信息【显示在docs文件中】
