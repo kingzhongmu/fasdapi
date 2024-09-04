@@ -31,7 +31,7 @@ application.add_event_handler("startup", startup(application))
 application.add_event_handler("shutdown", stopping(application))
 
 
-# 异常错误处理【针对三类异常的处理回调】
+# 异常错误处理【针对三类异常的处理回调：http异常，请求验证异常，执行器异常】
 application.add_exception_handler(HTTPException, http_error_handler)
 application.add_exception_handler(RequestValidationError, http422_error_handler)
 application.add_exception_handler(UnicornException, unicorn_exception_handler)
