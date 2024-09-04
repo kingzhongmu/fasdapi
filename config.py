@@ -19,11 +19,13 @@ class Config(BaseSettings):
     DESCRIPTION: str = 'fastapi项目demo'
     # 静态资源目录【os.getcwd() 获取工作目录， 同app.py目录】
     STATIC_DIR: str = os.path.join(os.getcwd(), "static")
+    TEMPLATE_DIR: str = os.path.join(STATIC_DIR, "templates")
     # 跨域请求
     CORS_ORIGINS: List[str] = ['*']
     CORS_ALLOW_CREDENTIALS: bool = True
     CORS_ALLOW_METHODS: List[str] = ['*']
     CORS_ALLOW_HEADERS: List[str] = ['*']
+
 
 
 settings = Config()

@@ -12,10 +12,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from config import settings
 from fastapi.staticfiles import StaticFiles
-from api.Base import router
+from core.Router import AllRouter
 from core.Events import startup, stopping
 from core.Exception import http_error_handler, http422_error_handler, unicorn_exception_handler, UnicornException
 from core.Middleware import Middleware
+from fastapi.templating import Jinja2Templates
 
 # 创建app对象
 application = FastAPI(
@@ -37,7 +38,7 @@ application.add_exception_handler(RequestValidationError, http422_error_handler)
 application.add_exception_handler(UnicornException, unicorn_exception_handler)
 
 # 路由【api中的Base路由】
-application.include_router(router)
+application.include_router(AllRouter)
 
 # 中间件【添加中间件】
 application.add_middleware(Middleware)
@@ -56,6 +57,9 @@ application.add_middleware(
 )
 
 # 静态资源目录
-application.mount('/static', StaticFiles(directory=os.path.join(os.getcwd(), "static")))
+application.mount('/static', StaticFiles(directory=settings.STATIC_DIR), name="static")
+
+# state可以往请求头中塞一些东西，这里把views塞进去，保存模板对象；后面的所有传入路径的request都有这个模板参数
+application.state.views = Jinja2Templates(directory=settings.TEMPLATE_DIR)
 
 app = application
