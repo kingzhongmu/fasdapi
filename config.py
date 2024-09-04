@@ -13,11 +13,11 @@ from typing import List
 class Config(BaseSettings):
     # 调试模式
     APP_DEBUG: bool = True
-    # 项目信息
+    # 项目信息【显示在docs文件中】
     VERSION: str = "0.0.1"
     PROJECT_NAME: str = "fastapi-demo"
     DESCRIPTION: str = 'fastapi项目demo'
-    # 静态资源目录
+    # 静态资源目录【os.getcwd() 获取工作目录， 同app.py目录】
     STATIC_DIR: str = os.path.join(os.getcwd(), "static")
     # 跨域请求
     CORS_ORIGINS: List[str] = ['*']
