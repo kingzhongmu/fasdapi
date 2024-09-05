@@ -23,6 +23,23 @@ zhihu.com/question/19786827
 - `http.response.body`消息用于发送HTTP响应的体部分，可以发送一个或多个这样的消息来传递完整的响应体。
 - 这两个消息共同构成了ASGI应用程序发送给服务器的完整HTTP响应。服务器随后将这些信息转发给客户端。  
 
+## 对于中间件的理解
+假设中间件的添加顺序： 自定义Middleware，SessionMiddleware， CORSMiddleware
+请求发过来时的处理顺序是CORSMiddleware -> SessionMiddleware -> Middleware
+对请求的响应处理顺序是Middleware -> SessionMiddleware -> CORSMiddleware
+
+## SessionMiddleware的理解
+0 在app中add_middleware时，会初始化seesion和cookie 都为空的字典  
+- 浏览器首次请求时  
+    1 请求到来时，可以通过req.session.setdefault("session", "session_strxxxx")为seesion设置值【代码中是在自定义的Middleware中设置】  
+    2 响应时，SessionMiddleware的send_wrap被回调，对这个session值进行加密【由加密盐+base64+时间+其他】，保存在cookie中的 "session_id"【可配置】中,cookie被挂载到headers（headers.append("Set-Cookie", header_value)）；发送响应到客户端  
+    3 浏览器收到请求，把cookie保存在应用中
+- 浏览器再次请求时  
+    1 请求携带cookie到后端  
+    2 浏览器的SessionMiddleware 会先解析出cookie，通过session_id字段，解析出session加密值，再解密出session的原始值，保存在scope中  
+    3 这样浏览器就可以通过seesion去判断是哪个用户的请求
+
+
 
 ## 安装依赖
 pip install -r requirement.txt

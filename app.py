@@ -40,6 +40,8 @@ application.add_exception_handler(UnicornException, unicorn_exception_handler)
 # 路由【api中的Base路由】
 application.include_router(AllRouter)
 
+# 处理请求时，中间件的调用顺序和添加顺序相反
+# 处理响应时，中间件的调用顺序和添加顺序相同（均调用定义的 send_wrap）
 # 中间件【添加中间件】
 application.add_middleware(Middleware)
 # 添加session中间件
