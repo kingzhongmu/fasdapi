@@ -4,7 +4,7 @@
 @Author: binkuolo
 @Des: app运行时文件
 """
-
+import uvicorn
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
@@ -42,12 +42,14 @@ application.include_router(AllRouter)
 
 # 中间件【添加中间件】
 application.add_middleware(Middleware)
+# 添加session中间件
 application.add_middleware(
     SessionMiddleware,
-    secret_key="session",
-    session_cookie="f_id",
-    # max_age=4
+    secret_key=settings.SECRET_KEY,
+    session_cookie=settings.SESSION_COOKIE,
+    max_age=settings.SESSION_MAX_AGE
 )
+# 添加跨域中间件
 application.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -63,3 +65,6 @@ application.mount('/static', StaticFiles(directory=settings.STATIC_DIR), name="s
 application.state.views = Jinja2Templates(directory=settings.TEMPLATE_DIR)
 
 app = application
+
+if __name__ == '__main__':
+    uvicorn.run(app)

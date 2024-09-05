@@ -29,6 +29,10 @@ class Config(BaseSettings):
     CORS_ALLOW_METHODS: List[str] = ['*']
     CORS_ALLOW_HEADERS: List[str] = ['*']
 
+    # session
+    SECRET_KEY = "session"   # 这是一个加密盐，用于加密和解密session数据
+    SESSION_COOKIE = "session_id"  # 这个是session在cookie中的保存的键值
+    SESSION_MAX_AGE = 14 * 24 * 60 * 60
 
 
 settings = Config()

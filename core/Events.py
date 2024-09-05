@@ -9,6 +9,9 @@ from typing import Callable
 from fastapi import FastAPI
 from database.mysql import register_mysql
 
+from database.redis import sys_cache
+from aioredis import Redis
+
 
 def startup(app: FastAPI) -> Callable:
     """
@@ -18,9 +21,13 @@ def startup(app: FastAPI) -> Callable:
     """
     async def app_start() -> None:
         # APP启动完成后触发
-        print("启动完毕")
+        print("fastapi已启动")
         # 注册数据库
         await register_mysql(app)
+
+        # 注入缓存到app state
+        # 可以在request中获取到（如：value = await req.app.state.cache.get("today")） 参见test_redis
+        app.state.cache = await sys_cache()
         pass
     return app_start
 
@@ -33,7 +40,8 @@ def stopping(app: FastAPI) -> Callable:
     """
     async def stop_app() -> None:
         # APP停止时触发
-        print("停止")
-        pass
+        print("fastapi已停止")
+        cache: Redis = await app.state.cache
+        await cache.close()
 
     return stop_app

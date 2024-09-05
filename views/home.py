@@ -5,15 +5,25 @@
 @Des: views home
 """
 from pydantic import Required
-
+from fastapi import Request, Form, Cookie
 from fastapi import Request, Form
 from models.base import User
+from typing import Optional
 
 
-async def home(request: Request, id: str):
+async def home(request: Request, session_id: Optional[str] = Cookie(None)):
     # 从request中获取templates（即request.app.state.views）；调用渲染函数
-    return request.app.state.views.TemplateResponse("index.html", {"request": request, "id": id})
-
+    # return request.app.state.views.TemplateResponse("index.html", {"request": request, "id": id})
+    for key in request:
+        print("--", key, request[key])
+    cookie = session_id
+    session = request.session.get("session")
+    page_data = {
+        "cookie": cookie,
+        "session": session
+    }
+    # request.session.setdefault("55555", "hdaldais")
+    return request.app.state.views.TemplateResponse("index.html", {"request": request, **page_data})
 
 async def reg_page(req: Request):
     """
