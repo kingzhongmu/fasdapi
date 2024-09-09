@@ -24,9 +24,9 @@ zhihu.com/question/19786827
 - 这两个消息共同构成了ASGI应用程序发送给服务器的完整HTTP响应。服务器随后将这些信息转发给客户端。  
 
 ## 对于中间件的理解
-假设中间件的添加顺序： 自定义Middleware，SessionMiddleware， CORSMiddleware
-请求发过来时的处理顺序是CORSMiddleware -> SessionMiddleware -> Middleware
-对请求的响应处理顺序是Middleware -> SessionMiddleware -> CORSMiddleware
+假设中间件的添加顺序： 自定义Middleware，SessionMiddleware， CORSMiddleware  
+请求发过来时的处理顺序是CORSMiddleware -> SessionMiddleware -> Middleware  
+对请求的响应处理顺序是Middleware -> SessionMiddleware -> CORSMiddleware【回调send_wrap】  
 
 ## SessionMiddleware的理解
 0 在app中add_middleware时，会初始化seesion和cookie 都为空的字典  

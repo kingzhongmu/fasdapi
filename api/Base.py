@@ -1,26 +1,48 @@
 # -*- coding:utf-8 -*-
 """
-@Created on : 2024/9/4
-@Author: vaconzhang
-@Des: 基本路由
+@Created on : 2022/4/22 22:02
+@Author: binkuolo
+@Des: api路由
 """
-from fastapi import APIRouter
-from api.login import index, login
-from api.test_redis import test_my_redis, test_my_redis_depends
+from fastapi import APIRouter, Security
+from core.Auth import check_permissions
+from api.user import user_info, user_add, user_del, account_login, user_list
+from schemas.user import CurrentUser, UserLogin
+from api.test import test_oath2
 
-# 这里的tags为所有使用ApiRouter的路由进行分类
-ApiRouter = APIRouter(prefix="/v1", tags=["api路由"])
-
-
-ApiRouter.get("/test/my/redis", tags=["api路由"], summary="fastapi的state方式")(test_my_redis)
-ApiRouter.get("/test/my/redis/depends", tags=["api路由"], summary="依赖注入方式")(test_my_redis_depends)
-
+ApiRouter = APIRouter(prefix="/api/v1")
+AdminRouter = APIRouter(prefix="/admin")
 # 非装饰器的方式添加路由【tags 用于对路由进行分类； summary用于对路由进行注释】
-ApiRouter.get("/index", tags=["api路由"], summary="注册接口")(index)
-ApiRouter.post("/login", tags=["api路由"], summary="登陆接口")(login)
+ApiRouter.post("/test/oath2", tags=["测试oath2授权"])(test_oath2)
+
+AdminRouter.post("/account/login", response_model=UserLogin, tags=["管理员登陆"], summary="用户登陆")(account_login)
+
+# 请求走到这个路由，会先走Security 中的check_permissions回调；scopes 指定路由所需要的作用域权限，如果是list，用户拥有list中的任一权限即可访问路由
+AdminRouter.get("/user/info",
+                tags=["用户管理"],
+                summary="获取当前管理员信息",
+                dependencies=[Security(check_permissions)],
+                response_model=CurrentUser
+                )(user_info)
+
+AdminRouter.get("/user/list",
+                tags=["用户管理"],
+                summary="获取管理员列表",
+                dependencies=[Security(check_permissions, scopes=["user_list"])],
+                # response_model=CurrentUser
+                )(user_list)
 
 
-@ApiRouter.get('/input')
-async def home(num: int):
-    # fastapi返回的字典，正好对应的是web前段对应的json
-    return {"num": num, "data": [{"num": num, "data": []}, {"num": num, "data": []}]}
+AdminRouter.delete("/user/del",
+                   tags=["用户管理"],
+                   summary="管理员删除",
+                   dependencies=[Security(check_permissions, scopes=["user_delete"])]
+                   )(user_del)
+
+AdminRouter.post("/user/add",
+                 tags=["用户管理"],
+                 summary="管理员添加",
+                 dependencies=[Security(check_permissions, scopes=["user_add"])]
+                 )(user_add)
+
+ApiRouter.include_router(AdminRouter)

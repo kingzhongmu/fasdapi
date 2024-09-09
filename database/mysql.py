@@ -3,6 +3,7 @@
 @Time : 2022/4/24 10:15 AM
 @Author: binkuolo
 @Des: mysql数据库
+models中的数据变更，或者需要删除数据库的表，重新创建表时，register_mysql中的generate_schemas设置为True
 """
 
 from fastapi import FastAPI
@@ -67,6 +68,6 @@ async def register_mysql(app: FastAPI):
     register_tortoise(
         app,
         config=DB_ORM_CONFIG,
-        generate_schemas=False,  # 如果为True的话（在数据库中创建表;如果已经有对应表了，则报一个错误），
+        generate_schemas=False,  # 如果为True的话（在数据库中创建表;如果已经有对应表了，则报一个错误）
         add_exception_handlers=True,  # mysql 开启了异常信息的处理
     )

@@ -18,8 +18,8 @@ class Config(BaseSettings):
     APP_DEBUG: bool = True
     # 项目信息【显示在docs文件中】
     VERSION: str = "0.0.1"
-    PROJECT_NAME: str = "fastapi-demo"
-    DESCRIPTION: str = 'fastapi项目demo'
+    PROJECT_NAME: str = "fasdapi"
+    DESCRIPTION: str = '<a href="/redoc" target="_blank">redoc</a>'
     # 静态资源目录【os.getcwd() 获取工作目录， 同app.py目录】
     STATIC_DIR: str = os.path.join(os.getcwd(), "static")
     TEMPLATE_DIR: str = os.path.join(STATIC_DIR, "templates")
@@ -34,5 +34,10 @@ class Config(BaseSettings):
     SESSION_COOKIE = "session_id"  # 这个是session在cookie中的保存的键值
     SESSION_MAX_AGE = 14 * 24 * 60 * 60
 
+    # Jwt
+    JWT_SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+    JWT_ALGORITHM = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60
 
+    SWAGGER_UI_OAUTH2_REDIRECT_URL = "/api/v1/test/oath2"
 settings = Config()
