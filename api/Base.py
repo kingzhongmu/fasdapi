@@ -2,7 +2,7 @@
 """
 @Created on : 2022/4/22 22:02
 @Author: binkuolo
-@Des: api路由
+@Des: api路由【总】
 """
 from fastapi import APIRouter, Security
 from core.Auth import check_permissions
@@ -15,6 +15,7 @@ AdminRouter = APIRouter(prefix="/admin")
 # 非装饰器的方式添加路由【tags 用于对路由进行分类； summary用于对路由进行注释】
 ApiRouter.post("/test/oath2", tags=["测试oath2授权"])(test_oath2)
 
+# UserLogin 响应模型
 AdminRouter.post("/account/login", response_model=UserLogin, tags=["管理员登陆"], summary="用户登陆")(account_login)
 
 # 请求走到这个路由，会先走Security 中的check_permissions回调；scopes 指定路由所需要的作用域权限，如果是list，用户拥有list中的任一权限即可访问路由

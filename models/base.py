@@ -2,7 +2,7 @@
 """
 @Time : 2022/4/24 10:40 AM
 @Author: binkuolo
-@Des: 基础模型
+@Des: 基础模型【配置数据库的表模型】
 """
 
 from tortoise import fields

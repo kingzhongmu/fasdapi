@@ -2,7 +2,7 @@
 """
 @Time : 2022/5/4 10:54 PM
 @Author: binkuolo
-@Des: 基础schemas
+@Des: 基础schemas【路由的入参pydantic和出参pydantic】
 """
 from pydantic import BaseModel, Field
 

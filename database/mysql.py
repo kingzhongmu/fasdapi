@@ -2,7 +2,7 @@
 """
 @Time : 2022/4/24 10:15 AM
 @Author: binkuolo
-@Des: mysql数据库
+@Des: mysql数据库【创建】
 models中的数据变更，或者需要删除数据库的表，重新创建表时，register_mysql中的generate_schemas设置为True
 """
 

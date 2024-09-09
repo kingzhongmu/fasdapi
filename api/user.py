@@ -2,7 +2,7 @@
 """
 @Time : 2022/4/27 5:24 PM
 @Author: binkuolo
-@Des: 用户管理
+@Des: 用户管理【对应模块路由处理】
 """
 from core.Response import success, fail
 from schemas.user import CreateUser, AccountLogin, UserInfo

@@ -16,6 +16,7 @@ from config import settings
 from models.base import User, Access
 from fastapi.security.oauth2 import OAuth2PasswordBearer
 
+# 添加两个域【admin， not_admin】
 OAuth2 = OAuth2PasswordBearer(settings.SWAGGER_UI_OAUTH2_REDIRECT_URL, scheme_name="User",
                               scopes={"is_admin": "超级管理员", "not_admin": "普通管理员"})
 

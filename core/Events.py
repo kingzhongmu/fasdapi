@@ -2,7 +2,7 @@
 """
 @Created on : 2022/4/22 22:02
 @Author: binkuolo
-@Des: fastapi事件监听
+@Des: fastapi事件监听【服务启动前，杀掉前做的事情】
 """
 
 from typing import Callable

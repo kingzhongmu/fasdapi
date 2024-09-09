@@ -2,7 +2,7 @@
 """
 @Time : 2022/5/5 11:04 AM
 @Author: binkuolo
-@Des: 用户表curd
+@Des: 用户表curd【涉及和数据库的操作】
 """
 from models.base import User
 from schemas.user import CreateUser
